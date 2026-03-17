@@ -1,0 +1,3 @@
+Cycle,Step_dV_V,Step_dI_A,Calc_R_Ohms,Temp_C,SOH_Resistance_%,SOH_Capacity_%,Final_Blended_SOH_%
+1,-0.05,0.0,0.02,26.0,100.0,100.0,100.0
+1,-0.02,-2.0,0.01,28.0,100.0,100.0,100.0
