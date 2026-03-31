@@ -1,0 +1,3 @@
+file,status,reason,rows,discharge_rows,discharge_sign,start_voltage_v,end_voltage_v,measured_capacity_ah,capacity_ratio_to_rated
+LFP_k1_0_05C_25degC.xlsx,uncertain,starts high at 3.535 V; ends near cutoff at 2.000 V; capacity intermediate (2571487.885 Ah),90839,74048,negative,3.5349,2.0,2571487.8847,1028595.1539
+LFP_k1_1C_25degC (1).xlsx,likely partial discharge,does not start high (2.706 V); does not end near cutoff (3.600 V); capacity intermediate (2573409.881 Ah),17022,6120,positive,2.7056,3.6,2573409.8806,1029363.9522
