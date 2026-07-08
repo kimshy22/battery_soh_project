@@ -2,9 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# =========================================================
-# 1. USER SETTINGS
-# =========================================================
 Q_RATED_AH = 2.5
 NOMINAL_VOLTAGE_V = 3.3
 
@@ -15,9 +12,6 @@ USE_PARTIAL_SOC_CORRECTION = False
 SOC_START = 90.0
 SOC_END = 20.0
 
-# =========================================================
-# 2. LOAD DISCHARGE-ONLY CSV
-# =========================================================
 print("Loading discharge-only CSV...")
 df = pd.read_csv(file_path)
 
@@ -30,9 +24,6 @@ print(df.columns.tolist())
 print("\nDataset shape:")
 print(df.shape)
 
-# =========================================================
-# 3. RENAME COLUMNS TO STANDARD NAMES
-# =========================================================
 df = df.rename(columns={
     'Test_Time(s)': 'time_s',
     'Voltage(V)': 'voltage_v',
@@ -43,9 +34,6 @@ df = df.rename(columns={
 print("\nColumns after renaming:")
 print(df.columns.tolist())
 
-# =========================================================
-# 4. KEEP ONLY REQUIRED COLUMNS
-# =========================================================
 required_cols = ['time_s', 'voltage_v', 'current_a', 'temp_c']
 df = df[required_cols].copy()
 
@@ -63,18 +51,12 @@ print(df.head())
 print("\nMissing values after cleaning:")
 print(df.isnull().sum())
 
-# =========================================================
-# 5. COMPUTE TIME DIFFERENCE
-# =========================================================
 df['dt_s'] = df['time_s'].diff()
 df.loc[0, 'dt_s'] = 0
 
 print("\nData with time difference:")
 print(df.head())
 
-# =========================================================
-# 6. CHECK CURRENT VALUES
-# =========================================================
 print("\nCurrent statistics:")
 print(df['current_a'].describe())
 
@@ -85,9 +67,6 @@ print(df['current_a'].head(10).tolist())
 # we do NOT need to filter discharge again.
 discharge_df = df.copy()
 
-# =========================================================
-# 7. COMPUTE CAPACITY
-# =========================================================
 discharge_df['delta_q_ah'] = (
     discharge_df['current_a'].abs() * discharge_df['dt_s'] / 3600.0
 )
@@ -98,9 +77,6 @@ Q_window_ah = discharge_df['delta_q_ah'].sum()
 
 print(f"\nMeasured discharge capacity in this window: {Q_window_ah:.6f} Ah")
 
-# =========================================================
-# 8. DETERMINE CURRENT CAPACITY
-# =========================================================
 if USE_PARTIAL_SOC_CORRECTION:
     soc_fraction = (SOC_START - SOC_END) / 100.0
 
@@ -116,10 +92,6 @@ else:
 
 print(f"Capacity method used: {method_used}")
 print(f"Estimated current capacity: {Q_current_ah:.6f} Ah")
-
-# =========================================================
-# 9. COMPUTE SOH
-# =========================================================
 SOH_percent = (Q_current_ah / Q_RATED_AH) * 100.0
 
 print("\n===== SOH RESULTS =====")
@@ -128,10 +100,6 @@ print(f"Rated capacity: {Q_RATED_AH:.3f} Ah")
 print(f"Measured discharge capacity: {Q_window_ah:.6f} Ah")
 print(f"Estimated current capacity: {Q_current_ah:.6f} Ah")
 print(f"SOH: {SOH_percent:.2f} %")
-
-# =========================================================
-# 10. VISUALIZATIONS
-# =========================================================
 
 # Voltage vs Time
 plt.figure(figsize=(8, 5))
