@@ -2,11 +2,6 @@ import pandas as pd
 import numpy as np
 import os
 
-# =====================================================================
-# 1. Core BMS Functions
-# =====================================================================
-
-
 def get_lfp_soc_from_ocv(voltage):
     """Returns the State of Charge (%) based on a rested LFP Open-Circuit Voltage."""
     ocv_curve = [2.50, 3.00, 3.10, 3.20, 3.28, 3.30, 3.32, 3.33, 3.40]
@@ -22,10 +17,6 @@ def normalize_resistance_to_25c(r_measured, temp_c):
     t_meas_k = temp_c + 273.15
     multiplier = np.exp((E_a / R_g) * ((1 / t_ref_k) - (1 / t_meas_k)))
     return r_measured * multiplier
-
-# =====================================================================
-# 2. Data Logging & Display Functions
-# =====================================================================
 
 
 def log_raw_sensor_data(df, filename="raw_sensor_log.csv"):
@@ -64,10 +55,6 @@ def display_recent_history(filename="soh_history_log.csv", rows=3):
             "---------------------------------------------------------------------------\n")
     else:
         print("No history found yet.")
-
-# =====================================================================
-# 3. Main SOH/SOC Pipeline
-# =====================================================================
 
 
 def run_bms_pipeline(df, q_rated, r_initial_25c):
@@ -159,21 +146,19 @@ def run_bms_pipeline(df, q_rated, r_initial_25c):
     # Weights maintained at 0.65 and 0.35 to equal 1.0 (100%)
     final_soh = (0.65 * soh_r) + (0.35 * soh_c)
 
-    print("\n==================================================")
-    print("             CYCLE SUMMARY & SOH REPORT           ")
-    print("==================================================")
+    print("  CYCLE SUMMARY & SOH REPORT  ")
     print(f"Total Discharged:      {total_ah_discharged:.3f} Ah")
     print(f"Delta SOC (OCV):       {delta_soc:.1f}%")
-    print("--------------------------------------------------")
+   
     print(f"Step Voltage Drop:     {dV_step:.3f} V")
     print(f"Step Current Drop:     {dI_step:.3f} A")
     print(f"Measured Temp @ Step:  {temp_at_step:.1f} °C")
     print(f"Calculated Resistance: {r_measured:.5f} Ohms")
-    print("--------------------------------------------------")
+    
     print(f"SOH (Resistance-based): {soh_r:.2f}% (Weight: 65%)")
     print(f"SOH (Capacity-based):   {soh_c:.2f}% (Weight: 35%)")
     print(f"FINAL BLENDED SOH:      {final_soh:.2f}%")
-    print("==================================================")
+   )
 
     # Package all metrics to send back to the logging function
     metrics = {
