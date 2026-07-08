@@ -1,9 +1,6 @@
 import pandas as pd
 from pathlib import Path
 
-# =========================================================
-# USER SETTINGS
-# =========================================================
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 STANFORD_DIR = PROJECT_ROOT / "data" / "standford"
 
@@ -15,9 +12,6 @@ LOW_END_VOLTAGE = 2.60      # likely near cutoff if ending below this
 ALLOWED_EXTENSIONS = {".xlsx", ".xls", ".csv"}
 
 
-# =========================================================
-# HELPER FUNCTION: FIND COLUMN BY KEYWORDS
-# =========================================================
 def find_column(columns, keywords):
     """
     Return the first column whose lowercase name contains
@@ -31,9 +25,6 @@ def find_column(columns, keywords):
     return None
 
 
-# =========================================================
-# HELPER FUNCTION: LOAD FILE
-# =========================================================
 def load_file(file_path):
     suffix = file_path.suffix.lower()
 
@@ -43,11 +34,7 @@ def load_file(file_path):
         return pd.read_excel(file_path)
     else:
         return None
-
-
-# =========================================================
-# CORE ANALYSIS FOR ONE FILE
-# =========================================================
+        
 def analyze_stanford_file(file_path):
     try:
         df = load_file(file_path)
@@ -195,11 +182,7 @@ def analyze_stanford_file(file_path):
             "status": "error",
             "reason": str(e)
         }
-
-
-# =========================================================
-# MAIN
-# =========================================================
+        
 def main():
     if not STANFORD_DIR.exists():
         print(f"Stanford folder not found: {STANFORD_DIR}")
